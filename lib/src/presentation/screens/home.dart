@@ -56,13 +56,31 @@ class _HomeState extends State<Home> {
     });
   }
 
-  void _deleteTodo(index) {
+  void _recoveryTodo() {
+    setState(() {
+      _toDoList.insert(_lastRemovedPosition, _lastRemoved);
+      _todoService.persist(_toDoList);
+    });
+  }
+
+  void _deleteTodo(index, context) {
     setState(() {
       _lastRemoved = _toDoList[index];
       _lastRemovedPosition = index;
       _toDoList.removeAt(index);
 
       _todoService.persist(_toDoList);
+
+      final snack = SnackBar(
+        content: Text("Task '${_lastRemoved.title}' deleted"),
+        action: SnackBarAction(
+          label: 'Cancel',
+          onPressed: _recoveryTodo
+        ),
+        duration: Duration(seconds: 2),
+      );
+
+      Scaffold.of(context).showSnackBar(snack);
     });
   }
 
