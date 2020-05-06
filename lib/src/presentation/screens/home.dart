@@ -80,7 +80,22 @@ class _HomeState extends State<Home> {
         duration: Duration(seconds: 2),
       );
 
+      Scaffold.of(context).removeCurrentSnackBar();
       Scaffold.of(context).showSnackBar(snack);
+    });
+  }
+
+  Future<Null>_onSort() async {
+    await Future.delayed(Duration(seconds: 1));
+
+    setState(() {
+      _toDoList.sort((a, b) {
+        if (a.checked && !b.checked) return 1;
+        else if (!a.checked && b.checked) return -1;
+        return 0;
+      });
+
+      _todoService.persist(_toDoList);
     });
   }
 
@@ -95,7 +110,7 @@ class _HomeState extends State<Home> {
             key: _formKey,
             child: FormTodo(this._toDoController, this._addTodo),
           ),
-          Todos(this._toDoList, this._changeTodo, this._deleteTodo)
+          Todos(this._toDoList, this._changeTodo, this._deleteTodo, this._onSort)
         ]
       )
     );
