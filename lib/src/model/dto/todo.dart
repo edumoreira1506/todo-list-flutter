@@ -1,6 +1,6 @@
 class TodoDTO {
   final String title;
-  final bool checked;
+  bool checked;
 
   TodoDTO({
     this.title,

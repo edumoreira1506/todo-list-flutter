@@ -4,8 +4,9 @@ import 'package:flutter/widgets.dart';
 class Todo extends StatelessWidget{
   final String title;
   final bool checked;
+  final void Function(bool) onChanged;
 
-  Todo(this.title, this.checked);
+  Todo(this.title, this.checked, this.onChanged);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class Todo extends StatelessWidget{
           this.checked ? Icons.check : Icons.error
         )
       ),
-      onChanged: (newValue) { },
+      onChanged: (newValue) => this.onChanged(newValue),
     );
   }
 }

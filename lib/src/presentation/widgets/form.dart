@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class FormTodo extends StatelessWidget{
+  final TextEditingController controller;
+  final void Function() onSubmit;
+
+  FormTodo(this.controller, this.onSubmit);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -10,6 +15,7 @@ class FormTodo extends StatelessWidget{
         children: <Widget>[
           Expanded(
             child: TextField(
+              controller: this.controller,
               decoration: InputDecoration(
                 labelText: "Nova Tarefa",
                 labelStyle: TextStyle(
@@ -22,7 +28,7 @@ class FormTodo extends StatelessWidget{
             color: Colors.lightBlue,
             child: Text("ADD"),
             textColor: Colors.white,
-            onPressed: () { },
+            onPressed: this.onSubmit,
           )
         ],
       )
