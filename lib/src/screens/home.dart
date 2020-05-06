@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:todo_list/src/model/dto/todo.dart';
 import 'package:todo_list/src/widgets/form.dart';
 import 'package:todo_list/src/widgets/header.dart';
+import 'package:todo_list/src/widgets/todos.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -9,7 +11,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List _toDoList = [];
+  List<TodoDTO> _toDoList = [ TodoDTO(title: 'título!', checked: true) ];
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,8 @@ class _HomeState extends State<Home> {
       backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
-          FormTodo()
+          FormTodo(),
+          Todos(this._toDoList)
         ]
       )
     );
