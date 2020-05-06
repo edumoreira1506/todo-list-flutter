@@ -14,14 +14,15 @@ class FormTodo extends StatelessWidget{
       child: Row(
         children: <Widget>[
           Expanded(
-            child: TextField(
+            child: TextFormField(
               controller: this.controller,
               decoration: InputDecoration(
-                labelText: "Nova Tarefa",
+                labelText: "New Todo",
                 labelStyle: TextStyle(
                   color: Colors.lightBlue
                 )
               ),
+              validator: (value) => value.isEmpty ? 'Required' : null,
             )
           ),
           RaisedButton(

@@ -13,16 +13,20 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final _toDoController = TextEditingController();
 
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<TodoDTO> _toDoList = [ ];
 
   void _addTodo() {
-    setState(() {
-      TodoDTO newToDo = TodoDTO(title: _toDoController.text, checked: false);
+    if (_formKey.currentState.validate()) {
+      setState(() {
+        TodoDTO newToDo = TodoDTO(title: _toDoController.text, checked: false);
 
-      _toDoController.text = '';
+        _toDoController.text = '';
+        _formKey = GlobalKey<FormState>();
 
-      _toDoList.add(newToDo);
-    });
+        _toDoList.add(newToDo);
+      }); 
+    }
   }
 
   void _changeTodo(newValue, index) {
@@ -38,7 +42,10 @@ class _HomeState extends State<Home> {
       backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
-          FormTodo(_toDoController, _addTodo),
+          Form(
+            key: _formKey,
+            child: FormTodo(this._toDoController, this._addTodo),
+          ),
           Todos(this._toDoList, this._changeTodo)
         ]
       )
