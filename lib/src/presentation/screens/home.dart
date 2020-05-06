@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:todo_list/src/model/dto/todo.dart';
+import 'package:todo_list/src/model/service/todo_service.dart';
 import 'package:todo_list/src/presentation/widgets/form.dart';
 import 'package:todo_list/src/presentation/widgets/header.dart';
 import 'package:todo_list/src/presentation/widgets/todos.dart';
@@ -12,9 +13,23 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final _toDoController = TextEditingController();
+  final _todoService = TodoService();
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<TodoDTO> _toDoList = [ ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    _todoService.all().then((data) {
+      setState(() {
+        List<TodoDTO> list = _todoService.unserializeTodos(data);
+
+        _toDoList = list;
+      });
+    });
+  }
 
   void _addTodo() {
     if (_formKey.currentState.validate()) {
@@ -25,6 +40,7 @@ class _HomeState extends State<Home> {
         _formKey = GlobalKey<FormState>();
 
         _toDoList.add(newToDo);
+        _todoService.persist(_toDoList);
       }); 
     }
   }
@@ -32,6 +48,8 @@ class _HomeState extends State<Home> {
   void _changeTodo(newValue, index) {
     setState(() {
       _toDoList[index].checked = newValue;
+
+      _todoService.persist(_toDoList);
     });
   }
 
