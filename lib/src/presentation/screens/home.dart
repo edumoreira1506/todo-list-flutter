@@ -18,6 +18,9 @@ class _HomeState extends State<Home> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<TodoDTO> _toDoList = [ ];
 
+  TodoDTO _lastRemoved;
+  int _lastRemovedPosition;
+
   @override
   void initState() {
     super.initState();
@@ -53,6 +56,16 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void _deleteTodo(index) {
+    setState(() {
+      _lastRemoved = _toDoList[index];
+      _lastRemovedPosition = index;
+      _toDoList.removeAt(index);
+
+      _todoService.persist(_toDoList);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +77,7 @@ class _HomeState extends State<Home> {
             key: _formKey,
             child: FormTodo(this._toDoController, this._addTodo),
           ),
-          Todos(this._toDoList, this._changeTodo)
+          Todos(this._toDoList, this._changeTodo, this._deleteTodo)
         ]
       )
     );
